@@ -126,6 +126,7 @@ PhotonAnalysis::PhotonAnalysis()  :
 
     reComputeCiCPF = false;
     skimOnDiphoN = true;
+    nPhoMin = 2;
 
     doStocasticSmearingSyst = false;
     splitEscaleSyst = false;
@@ -2060,7 +2061,7 @@ void PhotonAnalysis::PreselectPhotons(LoopAll& l, int jentry)
         float et = p4.Pt();
         pho_et.push_back(et);
 
-	if( (eta>1.4442 && eta<1.566) || eta > 2.5 ) {
+        if( (eta>1.4442 && eta<1.566) || eta > 2.5 ) {
             continue;
         }
         pho_acc.push_back(ipho);
@@ -2180,7 +2181,7 @@ bool PhotonAnalysis::SelectEventsReduction(LoopAll& l, int jentry)
     if(PADEBUG)  cout << " ****************** SelectEventsReduction " << endl;
     // require at least two reconstructed photons to store the event
 
-    if( pho_acc.size() < 2 ) { return false; }
+    if( pho_acc.size() < nPhoMin ) { return false; }
 
     vtxAna_.clear();
     l.vtx_std_ranked_list->clear();
@@ -2308,7 +2309,7 @@ bool PhotonAnalysis::SelectEventsReduction(LoopAll& l, int jentry)
         postProcessJets(l,ivtx);
     }
     
-    return oneKinSelected;
+    return oneKinSelected || nPhoMin < 2;
 }
 
 // ----------------------------------------------------------------------------------------------------
@@ -2387,15 +2388,15 @@ bool PhotonAnalysis::SkimEvents(LoopAll& l, int jentry)
     
     
     l.b_pho_n->GetEntry(jentry);
-    if( l.pho_n < 2 ) {
+    if( l.pho_n < nPhoMin ) {
         return false;
     }
 
     if( skimOnDiphoN && l.typerun == l.kFill ) {
-	l.b_dipho_n->GetEntry(jentry);
-	if( l.dipho_n < 1 ) {
-	    return false;
-	}
+        l.b_dipho_n->GetEntry(jentry);
+        if( l.dipho_n < 1 ) {
+            return false;
+        }
     }
 
     // do not run trigger selection on MC

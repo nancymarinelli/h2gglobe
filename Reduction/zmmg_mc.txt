@@ -1,0 +1,1 @@
+/store/group/phys_higgs/cmshgg/processed/Zmmg_V15_00_11/mc/DYToMuMu_M-20_CT10_TuneZ2star_v2_8TeV-powheg-pythia6_Summer12_DR53X-PU_RD1_START53_V7N-v1 1 version=150011  analyzer PhotonAnalysis photonanalysis.dat common/reduction_settings_jan22rereco_rd_mc.dat zmumugamma/reduction_settings.dat

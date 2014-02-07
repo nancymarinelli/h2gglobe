@@ -104,6 +104,7 @@ class PhotonAnalysis : public BaseAnalysis
     bool reRunCiCForData;
     bool reComputeCiCPF;
     bool skimOnDiphoN;
+    int nPhoMin;
 
     float leadEtCut;
     float leadEtVBFCut;

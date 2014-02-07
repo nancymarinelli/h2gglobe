@@ -62,20 +62,27 @@
 ## rm data2012_RERECO/*.dat
 ## ./AnalysisScripts/mk_reduction_dat.py /store/group/phys_higgs/cmshgg/processed/V15_00_05/data ${storedir}/data data2012_RERECO.txt
 
-## Jun21 7TeV re-reco 
-rm mc_7TeV/*.dat
-./AnalysisScripts/mk_reduction_dat.py /store/group/phys_higgs/cmshgg/processed/V15_00_11/mc/ReReco2011 ${storedir}/mc mc_7TeV.txt
+## ## Jun21 7TeV re-reco 
+## rm mc_7TeV/*.dat
+## ./AnalysisScripts/mk_reduction_dat.py /store/group/phys_higgs/cmshgg/processed/V15_00_11/mc/ReReco2011 ${storedir}/mc mc_7TeV.txt
+## 
+## rm data_7TeV/*.dat
+## ./AnalysisScripts/mk_reduction_dat.py /store/group/phys_higgs/cmshgg/processed/V15_00_11/data ${storedir}/data data_7TeV.txt
 
-rm data_7TeV/*.dat
-./AnalysisScripts/mk_reduction_dat.py /store/group/phys_higgs/cmshgg/processed/V15_00_11/data ${storedir}/data data_7TeV.txt
+## Zmmg
+rm zmmg_mc/*.dat
+./AnalysisScripts/mk_reduction_dat.py - ${storedir}/mc zmmg_mc.txt 
 
-wd=$PWD
-cd AnalysisScripts
-tar cf $wd/${version}.tar *.py $(find common reduction baseline massfac_mva_binned full_mva_binned jetanalysis photonjet -name \*.dat -or -name \*.py) aux common python 
-cd -
+rm zmmg_data/*.dat
+./AnalysisScripts/mk_reduction_dat.py - ${storedir}/data zmmg_data.txt 
 
-tar rf ${version}.tar JSON *.sh
-gzip -f ${version}.tar
-
-git tag -a ${version} -m "Tag used for reduction ${group}/${version}"
+### wd=$PWD
+### cd AnalysisScripts
+### tar cf $wd/${version}.tar *.py $(find common reduction baseline massfac_mva_binned full_mva_binned jetanalysis photonjet -name \*.dat -or -name \*.py) aux common python 
+### cd -
+### 
+### tar rf ${version}.tar JSON *.sh
+### gzip -f ${version}.tar
+### 
+### git tag -a ${version} -m "Tag used for reduction ${group}/${version}"
 

@@ -835,16 +835,15 @@ class configProducer:
 
     # First check if its a signal sample we are defining, in which case calculate the x-section and BR
     ## print map_c["typ"], map_c["xsec"]
+    sample_name = map_c["Nam"]
+    hmass = None
+    toks = sample_name.split("_")
+    print toks
+    for tok in toks:
+        if tok.startswith("m") and tok[1:].isdigit():
+            hmass=int(tok[1:])
+            break
     if (map_c["typ"] == -1) : 
-	  sample_name = map_c["Nam"]
-	  ## hmass = int(sample_name[sample_name.find("m")+1:sample_name.find("m")+1+sample_name.find("_")])
-          hmass = None
-          toks = sample_name.split("_")
-          print toks
-          for tok in toks:
-              if tok.startswith("m") and tok[1:].isdigit():
-                  hmass=int(tok[1:])
-                  break
           if not hmass:
               print "The type id for the sample name %s is -1 so I tried to assign the type id automatically." % sample_name 
               print "   ... however I only recognize the format Nam=<process>_m<mass>_<sqrtS>."
@@ -886,10 +885,15 @@ class configProducer:
           print "Automatic sample type name:%s mass:%d proc:%s type:%d " % (sample_name, hmass, proc, -newtype)
           if map_c["xsec"] < 0: # not provided so figure it out ourselves
             map_c["xsec"] = self.ut_.normalizer().GetXsection(float(hmass),proc) * self.ut_.normalizer().GetBR(float(hmass))
-    elif map_c["typ"] < 0 and map_c["xsec"] < 0:
-          mass = self.ut_.normalizer().GetMass(map_c["typ"])
-          proc = self.ut_.normalizer().GetProcess(map_c["typ"])
-          map_c["xsec"] = self.ut_.normalizer().GetXsection(mass,proc) * self.ut_.normalizer().GetBR(mass)
+    elif map_c["typ"] < 0:
+        if map_c["xsec"] < 0:
+            mass = self.ut_.normalizer().GetMass(map_c["typ"])
+            proc = self.ut_.normalizer().GetProcess(map_c["typ"])
+            map_c["xsec"] = self.ut_.normalizer().GetXsection(mass,proc) * self.ut_.normalizer().GetBR(mass)
+        else:
+            proc = self.ut_.normalizer().GetProcess(map_c["typ"])
+            if proc == "":
+                self.ut_.normalizer().DefineProcess(map_c["typ"],sample_name)
     if PYDEBUG: print "Calculated signal X-section*BR = ", map_c["Nam"],map_c["typ"], map_c["xsec"]
     fi_type = map_c["typ"]
     
