@@ -76,13 +76,14 @@ rm zmmg_mc/*.dat
 rm zmmg_data/*.dat
 ./AnalysisScripts/mk_reduction_dat.py - ${storedir}/data zmmg_data.txt 
 
-### wd=$PWD
-### cd AnalysisScripts
-### tar cf $wd/${version}.tar *.py $(find common reduction baseline massfac_mva_binned full_mva_binned jetanalysis photonjet -name \*.dat -or -name \*.py) aux common python 
-### cd -
-### 
-### tar rf ${version}.tar JSON *.sh
-### gzip -f ${version}.tar
-### 
-### git tag -a ${version} -m "Tag used for reduction ${group}/${version}"
+wd=$PWD
+cd AnalysisScripts
+tar cf $wd/${version}.tar *.py $(find common reduction baseline massfac_mva_binned full_mva_binned jetanalysis photonjet -name \*.dat -or -name \*.py) aux common python 
+cd -
+
+tar rf ${version}.tar JSON *.sh
+gzip -f ${version}.tar
+
+git tag -d ${version}
+git tag -a ${version} -m "Tag used for reduction ${group}/${version}"
 

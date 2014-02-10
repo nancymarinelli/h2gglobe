@@ -9,7 +9,6 @@ class ZMuMuGammaAnalysis : public StatAnalysis
  public:
 
   void Init(LoopAll& l);
-  bool SkimEvents(LoopAll&, int);
 
   ZMuMuGammaAnalysis();
   virtual ~ZMuMuGammaAnalysis();

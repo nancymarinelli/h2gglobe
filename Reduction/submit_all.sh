@@ -1,20 +1,27 @@
 #!/bin/bash
 
-./submit_reduction.sh data_7TeV \* 200
+./submit_reduction.sh zmmg_data DoubleMuParked_Run2012A-22Jan2013-v1 30  &
+./submit_reduction.sh zmmg_data DoubleMuParked_Run2012B-22Jan2013-v1 200 &
+./submit_reduction.sh zmmg_data DoubleMuParked_Run2012C-22Jan2013-v1 350 &
+./submit_reduction.sh zmmg_data DoubleMuParked_Run2012D-22Jan2013-v1 350 &
 
-./submit_reduction.sh mc_7TeV \*GluGlu\*HToGG\* 5
-./submit_reduction.sh mc_7TeV \*VBF_HToGG\* 5
-./submit_reduction.sh mc_7TeV \*WH_ZH_HToGG\* 5
-./submit_reduction.sh mc_7TeV \*TTH_HToGG\* 3
-./submit_reduction.sh mc_7TeV \*qqbar\*ToHToGG\* 5
+./submit_reduction.sh zmmg_mc \* 450 &
 
-./submit_reduction.sh mc_7TeV  GJet\* 150
-
-./submit_reduction.sh mc_7TeV  QCD\* 50
-./submit_reduction.sh mc_7TeV  QCD\* 50
-
-./submit_reduction.sh mc_7TeV DY\* 200
-./submit_reduction.sh mc_7TeV DiPhoton\* 50
+### ./submit_reduction.sh data_7TeV \* 200
+### 
+### ./submit_reduction.sh mc_7TeV \*GluGlu\*HToGG\* 5
+### ./submit_reduction.sh mc_7TeV \*VBF_HToGG\* 5
+### ./submit_reduction.sh mc_7TeV \*WH_ZH_HToGG\* 5
+### ./submit_reduction.sh mc_7TeV \*TTH_HToGG\* 3
+### ./submit_reduction.sh mc_7TeV \*qqbar\*ToHToGG\* 5
+### 
+### ./submit_reduction.sh mc_7TeV  GJet\* 150
+### 
+### ./submit_reduction.sh mc_7TeV  QCD\* 50
+### ./submit_reduction.sh mc_7TeV  QCD\* 50
+### 
+### ./submit_reduction.sh mc_7TeV DY\* 200
+### ./submit_reduction.sh mc_7TeV DiPhoton\* 50
 
 ## ./submit_reduction.sh data2012_RERECO DoublePhoton_Run2012B-22Jan2013-v1 200
 ## ./submit_reduction.sh data2012_RERECO DoublePhoton_Run2012D-22Jan2013-v1_v3 400 
