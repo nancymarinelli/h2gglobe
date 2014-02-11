@@ -1,30 +1,30 @@
 default=7
-htyp=0 plot=-1  ncat=13  xbins=250    ybins=0       xmin=0.0   xmax=250.0  ymin=0      ymax=0       name=pt
-htyp=0 plot=-1  ncat=13  xbins=51    ybins=0       xmin=-2.55 xmax=2.55  ymin=0     ymax=0      name=eta
-htyp=0 plot=-1  ncat=13  xbins=51    ybins=0       xmin=-2.55 xmax=2.55  ymin=0     ymax=0      name=phi
-htyp=0 plot=-1  ncat=13  xbins=240   ybins=0       xmin=60.0  xmax=120.0  ymin=0      ymax=0       name=mass
+htyp=0 plot=-1  ncat=15  xbins=250    ybins=0       xmin=0.0   xmax=250.0  ymin=0      ymax=0       name=pt 		yaxis=Events/bin xaxis=p^{T}_{#mu#mu#gamma}
+htyp=0 plot=-1  ncat=15  xbins=51    ybins=0       xmin=-2.55 xmax=2.55  ymin=0     ymax=0      name=eta 		yaxis=Events/bin xaxis=#eta{#mu#mu#gamma}
+htyp=0 plot=-1  ncat=15  xbins=51    ybins=0       xmin=-2.55 xmax=2.55  ymin=0     ymax=0      name=phi 		yaxis=Events/bin xaxis=#phi{#mu#mu#gamma}   
+htyp=0 plot=-1  ncat=15  xbins=240   ybins=0       xmin=60.0  xmax=120.0  ymin=0      ymax=0       name=mass 		yaxis=Events/bin xaxis=m_{#mu#mu#gamma}
 
-htyp=0 plot=-1  ncat=13  xbins=100    ybins=0       xmin=0.5   xmax=100.5  ymin=0      ymax=0       name=nvtx
+htyp=0 plot=-1  ncat=15  xbins=100    ybins=0       xmin=0.5   xmax=100.5  ymin=0      ymax=0       name=nvtx 		yaxis=Events/bin xaxis=N_{vtx}
 
-htyp=0 plot=-1  ncat=13  xbins=100    ybins=0       xmin=0.0   xmax=500.0  ymin=0      ymax=0       name=pho_sce
-htyp=0 plot=-1  ncat=13  xbins=51    ybins=0       xmin=-2.55   xmax=2.55  ymin=0      ymax=0       name=pho_sceta
-htyp=0 plot=-1  ncat=13  xbins=100    ybins=0       xmin=0.0   xmax=500.0  ymin=0      ymax=0       name=pho_e
-htyp=0 plot=-1  ncat=13  xbins=60    ybins=0       xmin=0.0   xmax=120.0  ymin=0      ymax=0       name=pho_pt
-htyp=0 plot=-1  ncat=13  xbins=51    ybins=0       xmin=-2.55   xmax=2.55  ymin=0      ymax=0       name=pho_eta
-htyp=0 plot=-1  ncat=13  xbins=51    ybins=0       xmin=-2.55   xmax=2.55  ymin=0      ymax=0       name=pho_phi
-htyp=0 plot=-1  ncat=13  xbins=100   ybins=0       xmin=0.    xmax=1.     ymin=0      ymax=0       name=pho_r9
+htyp=0 plot=-1  ncat=15  xbins=100    ybins=0       xmin=0.0   xmax=500.0  ymin=0      ymax=0       name=pho_sce 	yaxis=Events/bin xaxis=E_{SC}
+htyp=0 plot=-1  ncat=15  xbins=51    ybins=0       xmin=-2.55   xmax=2.55  ymin=0      ymax=0       name=pho_sceta 	yaxis=Events/bin xaxis=#eta_{SC}
+htyp=0 plot=-1  ncat=15  xbins=100    ybins=0       xmin=0.0   xmax=500.0  ymin=0      ymax=0       name=pho_e 		yaxis=Events/bin xaxis=E_{#gamma}
+htyp=0 plot=-1  ncat=15  xbins=60    ybins=0       xmin=0.0   xmax=120.0  ymin=0      ymax=0       name=pho_pt 		yaxis=Events/bin xaxis=p^{T}_{#gamma}
+htyp=0 plot=-1  ncat=15  xbins=51    ybins=0       xmin=-2.55   xmax=2.55  ymin=0      ymax=0       name=pho_eta 	yaxis=Events/bin xaxis=#eta_{#gamma}  
+htyp=0 plot=-1  ncat=15  xbins=51    ybins=0       xmin=-2.55   xmax=2.55  ymin=0      ymax=0       name=pho_phi 	yaxis=Events/bin xaxis=#phi_{#gamma}   
+htyp=0 plot=-1  ncat=15  xbins=100   ybins=0       xmin=0.    xmax=1.     ymin=0      ymax=0       name=pho_r9 		yaxis=Events/bin xaxis=R_{9}
 
-htyp=0 plot=-1  ncat=13  xbins=10    ybins=0       xmin=0.5   xmax=10.5   ymin=0      ymax=0       name=pho_n
+htyp=0 plot=-1  ncat=15  xbins=10    ybins=0       xmin=0.5   xmax=10.5   ymin=0      ymax=0       name=pho_n 		yaxis=Events/bin xaxis=N_{#gamma}
 
-htyp=0 plot=-1  ncat=13  xbins=60    ybins=0       xmin=0.0   xmax=120.0  ymin=0      ymax=0       name=mu1_pt
-htyp=0 plot=-1  ncat=13  xbins=51    ybins=0       xmin=-2.55   xmax=2.55  ymin=0      ymax=0       name=mu1_eta
-htyp=0 plot=-1  ncat=13  xbins=51    ybins=0       xmin=-2.55   xmax=2.55  ymin=0      ymax=0       name=mu1_phi
+htyp=0 plot=-1  ncat=15  xbins=60    ybins=0       xmin=0.0   xmax=120.0  ymin=0      ymax=0       name=mu1_pt 		yaxis=Events/bin xaxis=p^{T}_{#mu1}
+htyp=0 plot=-1  ncat=15  xbins=51    ybins=0       xmin=-2.55   xmax=2.55  ymin=0      ymax=0       name=mu1_eta 	yaxis=Events/bin xaxis=#eta_{#mu1}  
+htyp=0 plot=-1  ncat=15  xbins=51    ybins=0       xmin=-2.55   xmax=2.55  ymin=0      ymax=0       name=mu1_phi 	yaxis=Events/bin xaxis=#phi_{#mu1}   
 
-htyp=0 plot=-1  ncat=13  xbins=60    ybins=0       xmin=0.0   xmax=120.0  ymin=0      ymax=0       name=mu2_pt
-htyp=0 plot=-1  ncat=13  xbins=51    ybins=0       xmin=-2.55   xmax=2.55  ymin=0      ymax=0       name=mu2_eta
-htyp=0 plot=-1  ncat=13  xbins=51    ybins=0       xmin=-2.55   xmax=2.55  ymin=0      ymax=0       name=mu2_phi
+htyp=0 plot=-1  ncat=15  xbins=60    ybins=0       xmin=0.0   xmax=120.0  ymin=0      ymax=0       name=mu2_pt 		yaxis=Events/bin xaxis=p^{T}_{#mu2}
+htyp=0 plot=-1  ncat=15  xbins=51    ybins=0       xmin=-2.55   xmax=2.55  ymin=0      ymax=0       name=mu2_eta 	yaxis=Events/bin xaxis=#eta_{#mu2} 
+htyp=0 plot=-1  ncat=15  xbins=51    ybins=0       xmin=-2.55   xmax=2.55  ymin=0      ymax=0       name=mu2_phi 	yaxis=Events/bin xaxis=#phi_{#mu2} 
 
-htyp=0 plot=-1  ncat=13  xbins=250    ybins=0       xmin=0.0   xmax=250.0  ymin=0      ymax=0       name=mumu_pt
-htyp=0 plot=-1  ncat=13  xbins=51    ybins=0       xmin=-2.55 xmax=2.55  ymin=0     ymax=0      name=mumu_eta
-htyp=0 plot=-1  ncat=13  xbins=51    ybins=0       xmin=-2.55 xmax=2.55  ymin=0     ymax=0      name=mumu_phi
-htyp=0 plot=-1  ncat=13  xbins=360  ybins=0       xmin=30.0  xmax=120.0  ymin=0      ymax=0       name=mumu_mass
+htyp=0 plot=-1  ncat=15  xbins=250    ybins=0       xmin=0.0   xmax=250.0  ymin=0      ymax=0       name=mumu_pt 	yaxis=Events/bin xaxis=p^{T}_{#mu#mu}
+htyp=0 plot=-1  ncat=15  xbins=51    ybins=0       xmin=-2.55 xmax=2.55  ymin=0     ymax=0      name=mumu_eta 		yaxis=Events/bin xaxis=#eta_{#mu#mu} 
+htyp=0 plot=-1  ncat=15  xbins=51    ybins=0       xmin=-2.55 xmax=2.55  ymin=0     ymax=0      name=mumu_phi 		yaxis=Events/bin xaxis=#phi_{#mu#mu}
+htyp=0 plot=-1  ncat=15  xbins=360  ybins=0       xmin=30.0  xmax=120.0  ymin=0      ymax=0       name=mumu_mass 	yaxis=Events/bin xaxis=m_{#mu#mu}
