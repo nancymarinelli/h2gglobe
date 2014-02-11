@@ -80,11 +80,6 @@ bool ZMuMuGammaAnalysis::AnalyseEvent(LoopAll& l, Int_t jentry, float weight, TL
     genLevWeight=1.;
     
     // event selection
-    int muVtx=-1;
-    int mu_ind=-1;
-    int elVtx=-1;
-    int el_ind=-1;
-    
     int leadpho_ind=-1;
     int subleadpho_ind=-1;
     
@@ -152,7 +147,7 @@ bool ZMuMuGammaAnalysis::AnalyseEvent(LoopAll& l, Int_t jentry, float weight, TL
     if( ! isSyst ) {
     	    l.countersred[diPhoCounter_]++;
     }
-    
+
     // fill control plots
     fillPlots(0,evweight,l,leadMu,subMu,diMu,iselPho,selPho,mmg);
     fillPlots(1+etacat,evweight,l,leadMu,subMu,diMu,iselPho,selPho,mmg);
@@ -166,44 +161,48 @@ void ZMuMuGammaAnalysis::fillPlots(int cat, float evweight,
 				   LoopAll &l, TLorentzVector & leadMu, TLorentzVector & subMu, TLorentzVector & diMu, 
 				   int iselPho, TLorentzVector & selPho, TLorentzVector & mmg)
 {
-	TVector3 & selSc = *((TVector3*)l.sc_xyz->At(l.pho_scind[iselPho]));
-	double selScE =  l.sc_raw[l.pho_scind[iselPho]];
-        l.FillHist("pt"       ,cat,evweight,mmg.Pt());
-        l.FillHist("eta"      ,cat,evweight,mmg.Eta());
-        l.FillHist("phi"      ,cat,evweight,mmg.Phi());
-        l.FillHist("mass"     ,cat,evweight,mmg.M());
-        l.FillHist("nvtx"     ,cat,evweight,l.vtx_std_n);
-        l.FillHist("pho_n"    ,cat,evweight,l.pho_n);
-        l.FillHist("pho_e"    ,cat,evweight,selPho.E());
-        l.FillHist("pho_pt"   ,cat,evweight,selPho.Pt());
-        l.FillHist("pho_eta"  ,cat,evweight,selPho.Eta());
-        l.FillHist("pho_phi"  ,cat,evweight,selPho.Phi());
-        l.FillHist("pho_sce"  ,cat,evweight,selScE);
-        l.FillHist("pho_sceta",cat,evweight,selSc.Eta());
-        l.FillHist("pho_r9"   ,cat,evweight,l.pho_r9[iselPho]);
-        l.FillHist("mu1_pt"   ,cat,evweight,leadMu.Pt());
-        l.FillHist("mu1_eta"  ,cat,evweight,leadMu.Eta());
-        l.FillHist("mu1_phi"  ,cat,evweight,leadMu.Phi());
-        l.FillHist("mu2_pt"   ,cat,evweight,subMu.Pt());
-        l.FillHist("mu2_eta"  ,cat,evweight,subMu.Eta());
-        l.FillHist("mu2_phi"  ,cat,evweight,subMu.Phi());
-        l.FillHist("mumu_pt"  ,cat,evweight,diMu.Pt());
-        l.FillHist("mumu_eta" ,cat,evweight,diMu.Eta());
-        l.FillHist("mumu_phi" ,cat,evweight,diMu.Phi());
-        l.FillHist("mumu_mass",cat,evweight,diMu.M());
-	
-	if( cat == 0 ) { 
-                treevars_.run       = l.run;
-                treevars_.event     = l.event;
-                treevars_.lumi      = l.lumis;
-                treevars_.mass      = mmg.M();
-                treevars_.weight    = evweight;
-                treevars_.nvtx      = l.vtx_std_n;
-                *(treevars_.leadMu) = leadMu;
-                *(treevars_.subMu)  = subMu;
-                *(treevars_.photon) = selPho;
-		treevars_.idmva     = l.photonIDMVA(iselPho,0,selPho,bdtTrainingType.c_str());
-		std::vector<std::vector<bool> > ph_passcut;
-		treevars_.ciclevel  = l.PhotonCiCPFSelectionLevel(iselPho, 0, ph_passcut, 4, 0, &smeared_pho_energy[0]);
-	}
+
+
+
+  TVector3 & selSc = *((TVector3*)l.sc_xyz->At(l.pho_scind[iselPho]));
+  double selScE =  l.sc_raw[l.pho_scind[iselPho]];
+  //
+  l.FillHist("mmg_pt"       ,cat,mmg.Pt(),evweight);
+  l.FillHist("mmg_eta"      ,cat,mmg.Eta(),evweight);
+  l.FillHist("mmg_phi"      ,cat,mmg.Phi(),evweight);
+  l.FillHist("mmg_mass"     ,cat,mmg.M(),evweight);
+  l.FillHist("nvtx"     ,cat,l.vtx_std_n,evweight);
+  l.FillHist("pho_n"    ,cat,l.pho_n,evweight);
+  l.FillHist("pho_e"    ,cat,selPho.E(),evweight);
+  l.FillHist("pho_pt"   ,cat,selPho.Pt(),evweight);
+  l.FillHist("pho_eta"  ,cat,selPho.Eta(),evweight);
+  l.FillHist("pho_phi"  ,cat,selPho.Phi(),evweight);
+  l.FillHist("pho_sce"  ,cat,selScE,evweight);
+  l.FillHist("pho_sceta",cat,selSc.Eta(),evweight);
+  l.FillHist("pho_r9"   ,cat,l.pho_r9[iselPho],evweight);
+  l.FillHist("mu1_pt"   ,cat,leadMu.Pt(),evweight);
+  l.FillHist("mu1_eta"  ,cat,leadMu.Eta(),evweight);
+  l.FillHist("mu1_phi"  ,cat,leadMu.Phi(),evweight);
+  l.FillHist("mu2_pt"   ,cat,subMu.Pt(),evweight);
+  l.FillHist("mu2_eta"  ,cat,subMu.Eta(),evweight);
+  l.FillHist("mu2_phi"  ,cat,subMu.Phi(),evweight);
+  l.FillHist("mumu_pt"  ,cat,diMu.Pt(),evweight);
+  l.FillHist("mumu_eta" ,cat,diMu.Eta(),evweight);
+  l.FillHist("mumu_phi" ,cat,diMu.Phi(),evweight);
+  l.FillHist("mumu_mass",cat,diMu.M(),evweight);
+  
+  if( cat == 0 ) { 
+    treevars_.run       = l.run;
+    treevars_.event     = l.event;
+    treevars_.lumi      = l.lumis;
+    treevars_.mass      = mmg.M();
+    treevars_.weight    = evweight;
+    treevars_.nvtx      = l.vtx_std_n;
+    *(treevars_.leadMu) = leadMu;
+    *(treevars_.subMu)  = subMu;
+    *(treevars_.photon) = selPho;
+    treevars_.idmva     = l.photonIDMVA(iselPho,0,selPho,bdtTrainingType.c_str());
+    std::vector<std::vector<bool> > ph_passcut;
+    treevars_.ciclevel  = l.PhotonCiCPFSelectionLevel(iselPho, 0, ph_passcut, 4, 0, &smeared_pho_energy[0]);
+  }
 }
