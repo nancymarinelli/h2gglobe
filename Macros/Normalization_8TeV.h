@@ -37,7 +37,7 @@ class Normalization_8TeV {
 	void PlotExpected(double ,double);	
 	void PlotBR(double ,double);	
 	void PlotXS(double ,double);	
-	void DefineProcess(int id, std::string &name, double mass) { SignalTypeMap[id] = std::make_pair(name,mass); };
+	void DefineProcess(int id, const std::string &name, double mass) { SignalTypeMap[id] = std::make_pair(name,mass); };
 	
 	TGraph * GetSigmaGraph(TString process);
 	TGraph * GetBrGraph();

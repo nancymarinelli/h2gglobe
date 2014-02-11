@@ -838,11 +838,16 @@ class configProducer:
     sample_name = map_c["Nam"]
     hmass = None
     toks = sample_name.split("_")
-    print toks
+    guess_proc = ""
     for tok in toks:
         if tok.startswith("m") and tok[1:].isdigit():
             hmass=int(tok[1:])
             break
+        else:
+            if guess_proc != "":
+                guess_proc += "_"
+            guess_proc += tok
+
     if (map_c["typ"] == -1) : 
           if not hmass:
               print "The type id for the sample name %s is -1 so I tried to assign the type id automatically." % sample_name 
@@ -893,7 +898,8 @@ class configProducer:
         else:
             proc = self.ut_.normalizer().GetProcess(map_c["typ"])
             if proc == "":
-                self.ut_.normalizer().DefineProcess(map_c["typ"],sample_name)
+                print "Defining new process:", map_c["typ"],str(guess_proc),float(hmass)
+                self.ut_.normalizer().DefineProcess(map_c["typ"],str(guess_proc),float(hmass))
     if PYDEBUG: print "Calculated signal X-section*BR = ", map_c["Nam"],map_c["typ"], map_c["xsec"]
     fi_type = map_c["typ"]
     

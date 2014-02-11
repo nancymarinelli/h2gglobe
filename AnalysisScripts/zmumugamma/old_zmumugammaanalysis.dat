@@ -18,8 +18,8 @@ rescaleDZforVtxMVA=0
 saveBSTrees_=0
 
 ## Preselection cuts
-presel_scet1=15.
-presel_scet2=15.
+presel_scet1=0.
+presel_scet2=0.
 presel_maxeta=2.5
 
 ##### ## selection of the di-photon pair to use for vertex analysis
@@ -32,6 +32,7 @@ presel_maxeta=2.5
 ## forcedRho=0.
 ## useDefaultVertex=1
 
+applyPtoverM=1
 doTriggerSelection=0
 puHist=auto
 puMap=
@@ -41,7 +42,6 @@ energyCorrectionMethod=Bendavid
 doEcorrectionSmear=1
 doEcorrectionSyst=0
 
-## energy scale adjustement and errors
 scale_offset_file=energy_scale_offsets.dat
 scale_offset_error_file=energy_scale_errors.dat
 smearing_file=smearing_sigma_and_errors.dat
@@ -57,3 +57,7 @@ recomputeJetWp=0
 jetHandlerCfg=jetHandler_Legacy8TeV.py
 
 reComputeCiCPF=0
+
+#Photon ID MVA weights
+photonLevelNewIDMVA_EB=aux/2013FinalPaper_PhotonID_Barrel_BDT_TrainRangePT15.weights.xml
+photonLevelNewIDMVA_EE=aux/2013FinalPaper_PhotonID_Endcap_BDT_TrainRangePT15.weights.xml

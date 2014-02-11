@@ -575,6 +575,8 @@ void StatAnalysis::bookSignalModel(LoopAll& l, Int_t nDataBins)
 	if( ! sigProcessesToBook.empty() ) {
 	    for(std::vector<std::string>::iterator iproc=sigProcessesToBook.begin(); iproc!=sigProcessesToBook.end(); ++iproc) {
 		l.rooContainer->CreateDataSet("CMS_hgg_mass",Form("sig_%s_mass_m%d",iproc->c_str(),sig),nDataBins);
+		l.rooContainer->CreateDataSet("CMS_hgg_mass",Form("sig_%s_mass_m%d_rv",iproc->c_str(),sig),nDataBins);
+		l.rooContainer->CreateDataSet("CMS_hgg_mass",Form("sig_%s_mass_m%d_wv",iproc->c_str(),sig),nDataBins);
 	    }
 	} else { 
 	    // SM datasets
