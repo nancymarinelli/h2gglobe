@@ -125,7 +125,8 @@ bool ZMuMuGammaAnalysis::AnalyseEvent(LoopAll& l, Int_t jentry, float weight, TL
     	    TLorentzVector p4 = l.get_pho_p4( ipho, 0, &smeared_pho_energy[0]);
     	    // Fill TClonesArray with corrected 4-vectors
     	    new(phos_p4[ipho]) TLorentzVector(p4);
-	    if( photonSelection ( p4 ) ) {
+            int iVtx;
+	    if( photonSelection ( p4 ) && l.PhotonMITPreSelection( ipho, 0 , &smeared_pho_energy[0] ) ) {
     		    sorted_phos.push_back(ipho);
     	    }
     }
