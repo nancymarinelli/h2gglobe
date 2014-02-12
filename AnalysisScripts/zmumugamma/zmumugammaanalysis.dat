@@ -24,6 +24,17 @@ doCosThetaDependentInterferenceSmear=0
 skimOnDiphoN=0
 nPhoMin=1
 
+muPtMin=10.5
+muTkLayers=5
+muPixelHits=1
+muValidChambers=1
+muNmatches=2
+muNormChi2=10.
+muD0Vtx=0.2
+muDZVtx=0.5
+
+
+
 massMin=60
 massMax=120
 nDataBins=240
