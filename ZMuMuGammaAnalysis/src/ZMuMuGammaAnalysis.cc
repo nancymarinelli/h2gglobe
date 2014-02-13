@@ -95,19 +95,25 @@ bool ZMuMuGammaAnalysis::AnalyseEvent(LoopAll& l, Int_t jentry, float weight, TL
     	    }
     }
 
+ 
     if( sorted_mus.size() < 2 ) { return false; }
-    if( sorted_mus.size() == 2 && sorted_mus[0]*sorted_mus[1] > 0 ) { return false; }
+    //cout << " After muon selection  size " <<  sorted_mus.size() << endl;    
     //
     std::sort(sorted_mus.begin(),sorted_mus.end(),
     	      ClonesSorter<TLorentzVector,double,std::greater<double> >(l.mu_glo_p4,&TLorentzVector::Pt));
     
     int ileadMu = sorted_mus[0];
     int isubMu  = sorted_mus[1];
+    if ( l.mu_glo_charge[ileadMu] * l.mu_glo_charge[isubMu] > 0 ) {return false;}
+    //cout << " After muon charge selection " << endl;    
+
     // The case where there are more than two muons needs to be addressed
     TLorentzVector & leadMu =  *( (TLorentzVector*)l.mu_glo_p4->At(ileadMu));
     TLorentzVector & subMu  =  *( (TLorentzVector*)l.mu_glo_p4->At(isubMu) );    
     TLorentzVector diMu = leadMu + subMu;
     if ( diMu.M() < 35) {return false;}
+    //    cout << " After di-muon invariant mass " << endl;    
+
     
     // Photon selection
     // -------------------------------------------------------------------------------------------------
@@ -118,6 +124,8 @@ bool ZMuMuGammaAnalysis::AnalyseEvent(LoopAll& l, Int_t jentry, float weight, TL
     smeared_pho_weight.clear(); smeared_pho_weight.resize(l.pho_n,1.);
     applySinglePhotonSmearings(smeared_pho_energy, smeared_pho_r9, smeared_pho_weight, cur_type, l, energyCorrected, energyCorrectedError,
     			       phoSys, syst_shift);
+    //cout << " After smearing the photons " << endl;    
+
         
     std::vector<int> sorted_phos;
     TClonesArray phos_p4(TLorentzVector::Class(),l.pho_n);
@@ -130,6 +138,7 @@ bool ZMuMuGammaAnalysis::AnalyseEvent(LoopAll& l, Int_t jentry, float weight, TL
     		    sorted_phos.push_back(ipho);
     	    }
     }
+    //cout << " After photon selection photon size  " <<  sorted_phos.size() << endl;    
     if( sorted_phos.size() < 1 ) { return false; }
     std::sort(sorted_phos.begin(),sorted_phos.end(),
     	      ClonesSorter<TLorentzVector,double,std::greater<double> >(&phos_p4,&TLorentzVector::Pt));
@@ -137,7 +146,8 @@ bool ZMuMuGammaAnalysis::AnalyseEvent(LoopAll& l, Int_t jentry, float weight, TL
     int iselPho = sorted_phos[0];
     TLorentzVector & selPho =  *((TLorentzVector*)phos_p4.At(iselPho));
     if ( ! FSRselection (l, ileadMu, isubMu, iselPho, phos_p4  ) ) {return false;}
-    
+    //cout << " After FSR selection " << endl;            
+
     // Three body system
     // -------------------------------------------------------------------------------------------------
     //define near and far muon and select FSR
@@ -188,7 +198,7 @@ bool ZMuMuGammaAnalysis::AnalyseEvent(LoopAll& l, Int_t jentry, float weight, TL
     fillPlots(1+etacat,evweight,l,leadMu,subMu,diMu,iselPho,selPho,this->getMumugP4());
     fillPlots(3+2*etacat+ptcat,evweight,l,leadMu,subMu,diMu,iselPho,selPho,this->getMumugP4());
     fillPlots(7+category,evweight,l,leadMu,subMu,diMu,iselPho,selPho,this->getMumugP4());
-    
+    //cout << " After filling the plots " << endl;    
     //return (category >= 0 && mass>=massMin && mass<=massMax);
     return (category >= 0 );
 }
@@ -247,9 +257,14 @@ bool ZMuMuGammaAnalysis::muonSelection(LoopAll& l, int iMu) {
   bool result=true;
   TLorentzVector * p4 = (TLorentzVector*)l.mu_glo_p4->At(iMu);
 
+ 
+
+  //  cout << " entering Muon Selection Pt " <<  p4->Pt() << " tkLay " <<  l.mu_tkLayers[iMu] << " innerhits " << l.mu_glo_innerhits[iMu] << " Pixel " <<  l.mu_glo_pixelhits[iMu] << " valid chamb " <<  l.mu_glo_validChmbhits[iMu] << " nMatches " << l.mu_glo_nmatches[iMu] << " chi2 " <<l.mu_glo_chi2[iMu]/l.mu_glo_dof[iMu] << " d0 " <<   l.mu_glo_D0Vtx[iMu][0] << " dz " << l.mu_glo_DZVtx[iMu][0] << " gsf " << l.mu_glo_hasgsftrack[iMu] << endl;
+  //cout << " cut values " << muPtMin << " " << muTkLayers << " " << muPixelHits << " " << muValidChambers << " " << muNmatches << " " << muNormChi2 << " " << muD0Vtx << " " << muDZVtx << endl;
+
   if ( p4->Pt() <  muPtMin )                                     result=false;  
   if ( l.mu_tkLayers[iMu] <= muTkLayers  )                       result=false;
-  if ( !l.mu_glo_innerhits[iMu]     )                            result=false;
+  // if ( !l.mu_glo_innerhits[iMu]     )                            result=false;
   if ( l.mu_glo_pixelhits[iMu] < muPixelHits )                   result=false;
   if ( l.mu_glo_validChmbhits[iMu] < muValidChambers )           result=false;
   if ( l.mu_glo_nmatches[iMu] <= muNmatches  )                   result=false;
@@ -257,6 +272,8 @@ bool ZMuMuGammaAnalysis::muonSelection(LoopAll& l, int iMu) {
   if ( l.mu_glo_D0Vtx[iMu][0] > muD0Vtx )                        result=false;
   if ( l.mu_glo_DZVtx[iMu][0] > muDZVtx )                        result=false;
   if ( l.mu_glo_hasgsftrack[iMu] )                               result=false;
+
+  //cout << " ending Muon Selection result " << result <<  endl;
 
   return result;
 
@@ -275,7 +292,7 @@ bool ZMuMuGammaAnalysis::photonSelection (TLorentzVector& p4) {
 
 bool ZMuMuGammaAnalysis::FSRselection ( LoopAll& l, int ileadMu, int isubMu, int iPho, TClonesArray& phos_p4 ) {
 
-
+  bool result=true;
 
   int iNearMu=ileadMu;
   int iFarMu=isubMu;
@@ -298,10 +315,10 @@ bool ZMuMuGammaAnalysis::FSRselection ( LoopAll& l, int ileadMu, int isubMu, int
   }
   //
   float minDr = min(leadMuDR, subleadMuDR);
-  if ( minDr > 0.8) {return false;}
+  if ( minDr > 0.8) result=false;
   // apply isolation on the muons
-  if ( l.mu_glo_chhadiso04[ileadMu]/leadMu.Pt() > 0.2 ) {return false;}
-  if ( l.mu_glo_chhadiso04[isubMu]/subMu.Pt()   > 0.2 ) {return false;}
+  if ( l.mu_glo_chhadiso04[ileadMu]/leadMu.Pt() > 0.2 ) result=false;
+  if ( l.mu_glo_chhadiso04[isubMu]/subMu.Pt()   > 0.2 ) result=false;
   //
   TLorentzVector & farMuP4 =  *( (TLorentzVector*)l.mu_glo_p4->At(iFarMu));
 
@@ -309,10 +326,10 @@ bool ZMuMuGammaAnalysis::FSRselection ( LoopAll& l, int ileadMu, int isubMu, int
   mumugMass_ = diMu + selPho; 
 
 
-  if ( farMuP4.Pt() < 21) {return false;}
-  if ( mumugMass_.M() < massMin || mumugMass_.M() > massMax ) {return false;}
-  if ( (mumugMass_+diMu).M() > 180 ) {return false;}
+  if ( farMuP4.Pt() < 21) result=false;
+  if ( mumugMass_.M() < massMin || mumugMass_.M() > massMax ) result=false;
+  if ( (mumugMass_+diMu).M() > 180 ) result=false;
 
-
+  return result;
 
 }
