@@ -133,8 +133,9 @@ bool ZMuMuGammaAnalysis::AnalyseEvent(LoopAll& l, Int_t jentry, float weight, TL
     	    TLorentzVector p4 = l.get_pho_p4( ipho, 0, &smeared_pho_energy[0]);
     	    // Fill TClonesArray with corrected 4-vectors
     	    new(phos_p4[ipho]) TLorentzVector(p4);
-            int iVtx;
-	    if( photonSelection ( p4 ) && l.PhotonMITPreSelection( ipho, 0 , &smeared_pho_energy[0] ) ) {
+	    TVector3 & sc = *((TVector3*)l.sc_xyz->At(l.pho_scind[ipho]));
+            
+	    if  ( photonSelection ( p4, sc )   ) {
     		    sorted_phos.push_back(ipho);
     	    }
     }
@@ -147,40 +148,8 @@ bool ZMuMuGammaAnalysis::AnalyseEvent(LoopAll& l, Int_t jentry, float weight, TL
     TLorentzVector & selPho =  *((TLorentzVector*)phos_p4.At(iselPho));
     if ( ! FSRselection (l, ileadMu, isubMu, iselPho, phos_p4  ) ) {return false;}
     //cout << " After FSR selection " << endl;            
-
-    // Three body system
-    // -------------------------------------------------------------------------------------------------
-    //define near and far muon and select FSR
-    //    int iNearMu=ileadMu;
-    // int iFarMu=isubMu;
-    //
-    //float leadMuDPhi = l.DeltaPhi ( leadMu.Phi(), selPho.Phi() );
-    // float subleadMuDPhi = l.DeltaPhi ( leadMu.Phi(), selPho.Phi() );
-    //float leadMuDEta =  leadMu.Eta() -  selPho.Eta();
-    //float subleadMuDEta =  subMu.Eta() -  selPho.Eta();
-    //
-    //float leadMuDR = sqrt(leadMuDEta*leadMuDEta + leadMuDPhi*leadMuDPhi );
-    //float subleadMuDR = sqrt(subleadMuDEta*subleadMuDEta + subleadMuDPhi*subleadMuDPhi );
-    //
-    //if ( leadMuDR > subleadMuDR ) {
-    // iNearMu = isubMu;
-    // iFarMu =  ileadMu;
-    // }
-    //
-    //float minDr = min(leadMuDR, subleadMuDR);
-    // if ( minDr > 0.8) {return false;}
-    // apply isolation on the muons
-    //if ( l.mu_glo_chhadiso04[ileadMu]/leadMu.Pt() > 0.2 ) {return false;}
-    //if ( l.mu_glo_chhadiso04[isubMu]/subMu.Pt()   > 0.2 ) {return false;}
-    //
-    //TLorentzVector & farMuP4 =  *( (TLorentzVector*)l.mu_glo_p4->At(iFarMu));
-    //TLorentzVector mmg = diMu + selPho; 
-    //if ( farMuP4.Pt() < 21) {return false;}
-    //if ( mmg.M() < massMin || mmg.M() > massMax ) {return false;}
-    //if ( (mmg+diMu).M() > 180 ) {return false;}
-    // -----------------------------------------------------------------------------------------------------
-
-
+    // Apply photon pre-selection a la Hgg
+    if (! l.PhotonMITPreSelection( iselPho, 0 , &smeared_pho_energy[0] ) ) {return false;}
 
     // define categories for plotting
     int etacat = (l.pho_isEB[iselPho]);
@@ -264,7 +233,6 @@ bool ZMuMuGammaAnalysis::muonSelection(LoopAll& l, int iMu) {
 
   if ( p4->Pt() <  muPtMin )                                     result=false;  
   if ( l.mu_tkLayers[iMu] <= muTkLayers  )                       result=false;
-  // if ( !l.mu_glo_innerhits[iMu]     )                            result=false;
   if ( l.mu_glo_pixelhits[iMu] < muPixelHits )                   result=false;
   if ( l.mu_glo_validChmbhits[iMu] < muValidChambers )           result=false;
   if ( l.mu_glo_nmatches[iMu] <= muNmatches  )                   result=false;
@@ -280,10 +248,10 @@ bool ZMuMuGammaAnalysis::muonSelection(LoopAll& l, int iMu) {
 }
 
 
-bool ZMuMuGammaAnalysis::photonSelection (TLorentzVector& p4) {
+bool ZMuMuGammaAnalysis::photonSelection (TLorentzVector& p4, TVector3 & sc ) {
   bool result=true;
-  if ( fabs(p4.Eta())  > 2.5 )                               result=false;
-  if ( fabs(p4.Eta()) > 1.4442 &&  fabs(p4.Eta())  < 1.566 ) result=false;
+  if ( fabs(sc.Eta())  > 2.5 )                               result=false;
+  if ( fabs(sc.Eta()) > 1.4442 &&  fabs(sc.Eta())  < 1.566 ) result=false;
   if ( p4.Pt() < 10)                                         result=false;
 
   return result;
