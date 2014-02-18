@@ -59,8 +59,10 @@ private:
   float muNormChi2;
   float muD0Vtx;
   float muDZVtx;
-
-
+  
+  float phoPtMin;
+  float dEtaMin;
+  bool applyPhoPresel;
 
 };
 

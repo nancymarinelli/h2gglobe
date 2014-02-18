@@ -40,5 +40,5 @@ for j in jobs:
 	   	print "Submitting Job: qsub -q %s -o %s/%s.log -e %s/%s.err %s "%(options.queue,workingDir,j,workingDir,j,j)
    	   	os.system("qsub -q %s -o %s/%s.log -e %s/%s.err %s "%(options.queue,workingDir,j,workingDir,j,j))
 	   else:
-	     print "Submitting Job: bsub -q %s -o %s.log $PWD/%s" %(options.queue,j,j)
+	     print "Submitting Job: bsub -G u_CMST3 -q %s -o %s.log $PWD/%s" %(options.queue,j,j)
    	     os.system("bsub -q %s -o %s.log $PWD/%s "%(options.queue,j,j))

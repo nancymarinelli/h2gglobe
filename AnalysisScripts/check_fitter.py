@@ -34,7 +34,7 @@ status = {}
 
 for j in jobs:
     status[j] = ""
-    for stat in "run","fail","done":
+    for stat in "fail","run","done":
         if os.path.isfile("%s.%s" % (j,stat) ):
             status[j] = stat
 

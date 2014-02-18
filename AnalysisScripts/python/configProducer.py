@@ -302,7 +302,7 @@ class configProducer:
     self.plotvar_.clear()
     self.read_file(f)
     map_dict = { "htyp" : int, "plot": int, "ncat": int, "xbins" : int,  "ybins": int, "xmin": float, "xmax": float, "ymin": float, "ymax": float, "name": str, "xaxis":str, "yaxis":str };
-    map_c    = { }
+    map_c = {}
     default = 0
     for line in self.lines_:
       if len(line) < 2:

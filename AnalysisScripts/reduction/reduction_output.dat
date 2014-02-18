@@ -99,6 +99,7 @@ mu_glo_chi2
 mu_glo_type
 mu_glo_charge
 mu_glo_nmatches
+##skimmed mu_glo_posecal
 ##skimmed mu_glo_posvtx
 ##skimmed mu_glo_losthits
 mu_glo_validhits
@@ -110,6 +111,7 @@ mu_glo_ecaliso03
 mu_glo_hcaliso03
 mu_glo_tkiso03
 ##skimmed mu_glo_dz
+##skimmed mu_glo_d0
 mu_glo_D0Vtx
 mu_glo_DZVtx
 mu_tkLayers
