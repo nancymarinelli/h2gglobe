@@ -26,14 +26,14 @@ nPhoMin=1
 
 muPtMin=10.5
 muTkLayers=5
-muPixelHits=1
-muValidChambers=1
-muNmatches=2
+muPixelHits=0
+muValidChambers=0
+muNmatches=1
 muNormChi2=10.
 muD0Vtx=0.2
 muDZVtx=0.5
 
-
+dEtaMin=0.05
 
 massMin=60
 massMax=120

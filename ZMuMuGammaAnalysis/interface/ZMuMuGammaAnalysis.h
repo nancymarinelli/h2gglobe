@@ -18,7 +18,7 @@ class ZMuMuGammaAnalysis : public  StatAnalysis
 	  TreeVariables();
 	  
 	  unsigned int run, event, lumi;
-	  TLorentzVector *leadMu, *subMu, *photon;
+	  TLorentzVector *leadMu, *subMu, *photon, *mm, *mmg;
 	  int category;
 	  double mass;
 	  double weight;

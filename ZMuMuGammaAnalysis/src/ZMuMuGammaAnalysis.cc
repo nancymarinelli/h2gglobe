@@ -22,7 +22,7 @@ ZMuMuGammaAnalysis::ZMuMuGammaAnalysis()
 }
 ZMuMuGammaAnalysis::~ZMuMuGammaAnalysis(){}
 
-ZMuMuGammaAnalysis::TreeVariables::TreeVariables() : leadMu(0), subMu(0), photon(0)
+ZMuMuGammaAnalysis::TreeVariables::TreeVariables() : leadMu(0), subMu(0), photon(0), mm(0), mmg(0)
 {}
 
 // ----------------------------------------------------------------------------------------------------
@@ -39,6 +39,8 @@ void ZMuMuGammaAnalysis::Init(LoopAll& l)
     l.BookExternalTreeBranch( "leadMu",      &treevars_.leadMu, "zmmgAnalysis" );         
     l.BookExternalTreeBranch( "subMu",       &treevars_.subMu, "zmmgAnalysis" );         
     l.BookExternalTreeBranch( "photon",      &treevars_.photon, "zmmgAnalysis" );         
+    l.BookExternalTreeBranch( "mm",          &treevars_.mm, "zmmgAnalysis" );         
+    l.BookExternalTreeBranch( "mmg",         &treevars_.mmg, "zmmgAnalysis" );         
     l.BookExternalTreeBranch( "idmva",       &treevars_.idmva, "zmmgAnalysis" );         
     l.BookExternalTreeBranch( "ciclevel",    &treevars_.ciclevel, "zmmgAnalysis" );         
     // store photon ID MVA inputs
@@ -147,21 +149,24 @@ bool ZMuMuGammaAnalysis::AnalyseEvent(LoopAll& l, Int_t jentry, float weight, TL
 
         
     std::vector<int> sorted_phos;
+    std::vector<float> pho_minDr;
     TClonesArray phos_p4(TLorentzVector::Class(),l.pho_n);
     for(int ipho=0; ipho<l.pho_n; ++ipho) { 
     	    TLorentzVector p4 = l.get_pho_p4( ipho, 0, &smeared_pho_energy[0]);
     	    // Fill TClonesArray with corrected 4-vectors
     	    new(phos_p4[ipho]) TLorentzVector(p4);
 	    TVector3 & sc = *((TVector3*)l.sc_xyz->At(l.pho_scind[ipho]));
-            
+	    
+	    pho_minDr.push_back( min(p4.DeltaR(leadMu), p4.DeltaR(subMu)) );
 	    if  ( photonSelection ( p4, sc )   ) {
     		    sorted_phos.push_back(ipho);
     	    }
     }
     //cout << " After photon selection photon size  " <<  sorted_phos.size() << endl;    
     if( sorted_phos.size() < 1 ) { return false; }
-    std::sort(sorted_phos.begin(),sorted_phos.end(),
-    	      ClonesSorter<TLorentzVector,double,std::greater<double> >(&phos_p4,&TLorentzVector::Pt));
+    std::sort(sorted_phos.begin(),sorted_phos.end(),SimpleSorter<float>(&pho_minDr[0]) );
+    //// std::sort(sorted_phos.begin(),sorted_phos.end(),
+    //// 	      ClonesSorter<TLorentzVector,double,std::greater<double> >(&phos_p4,&TLorentzVector::Pt));
     
     int iselPho = sorted_phos[0];
     TLorentzVector & selPho =  *((TLorentzVector*)phos_p4.At(iselPho));
@@ -180,15 +185,15 @@ bool ZMuMuGammaAnalysis::AnalyseEvent(LoopAll& l, Int_t jentry, float weight, TL
     evweight = weight * smeared_pho_weight[iselPho] * genLevWeight;
     if( ! isSyst ) {
     	    l.countersred[diPhoCounter_]++;
-    }
 
-    // fill control plots
-    fillPlots(0,evweight,l,leadMu,subMu,diMu,iselPho,selPho,this->getMumugP4());
-    fillPlots(1+etacat,evweight,l,leadMu,subMu,diMu,iselPho,selPho,this->getMumugP4());
-    fillPlots(3+2*etacat+ptcat,evweight,l,leadMu,subMu,diMu,iselPho,selPho,this->getMumugP4());
-    fillPlots(7+category,evweight,l,leadMu,subMu,diMu,iselPho,selPho,this->getMumugP4());
-    //cout << " After filling the plots " << endl;    
-    //return (category >= 0 && mass>=massMin && mass<=massMax);
+	    // fill control plots
+	    fillPlots(0,evweight,l,leadMu,subMu,diMu,iselPho,selPho,this->getMumugP4());
+	    fillPlots(1+etacat,evweight,l,leadMu,subMu,diMu,iselPho,selPho,this->getMumugP4());
+	    fillPlots(3+2*etacat+ptcat,evweight,l,leadMu,subMu,diMu,iselPho,selPho,this->getMumugP4());
+	    fillPlots(7+category,evweight,l,leadMu,subMu,diMu,iselPho,selPho,this->getMumugP4());
+	    //cout << " After filling the plots " << endl;    
+	    //return (category >= 0 && mass>=massMin && mass<=massMax);
+    }
     
     treevars_.category = category;
     return (category >= 0 );
@@ -204,29 +209,29 @@ void ZMuMuGammaAnalysis::fillPlots(int cat, float evweight,
   TVector3 & selSc = *((TVector3*)l.sc_xyz->At(l.pho_scind[iselPho]));
   double selScE =  l.sc_raw[l.pho_scind[iselPho]];
   //
-  l.FillHist("mmg_pt"       ,cat,mmg.Pt(),evweight);
-  l.FillHist("mmg_eta"      ,cat,mmg.Eta(),evweight);
-  l.FillHist("mmg_phi"      ,cat,mmg.Phi(),evweight);
-  l.FillHist("mmg_mass"     ,cat,mmg.M(),evweight);
-  l.FillHist("nvtx"     ,cat,l.vtx_std_n,evweight);
-  l.FillHist("pho_n"    ,cat,l.pho_n,evweight);
-  l.FillHist("pho_e"    ,cat,selPho.E(),evweight);
-  l.FillHist("pho_pt"   ,cat,selPho.Pt(),evweight);
-  l.FillHist("pho_eta"  ,cat,selPho.Eta(),evweight);
-  l.FillHist("pho_phi"  ,cat,selPho.Phi(),evweight);
-  l.FillHist("pho_sce"  ,cat,selScE,evweight);
-  l.FillHist("pho_sceta",cat,selSc.Eta(),evweight);
-  l.FillHist("pho_r9"   ,cat,l.pho_r9[iselPho],evweight);
-  l.FillHist("mu1_pt"   ,cat,leadMu.Pt(),evweight);
-  l.FillHist("mu1_eta"  ,cat,leadMu.Eta(),evweight);
-  l.FillHist("mu1_phi"  ,cat,leadMu.Phi(),evweight);
-  l.FillHist("mu2_pt"   ,cat,subMu.Pt(),evweight);
-  l.FillHist("mu2_eta"  ,cat,subMu.Eta(),evweight);
-  l.FillHist("mu2_phi"  ,cat,subMu.Phi(),evweight);
-  l.FillHist("mumu_pt"  ,cat,diMu.Pt(),evweight);
-  l.FillHist("mumu_eta" ,cat,diMu.Eta(),evweight);
-  l.FillHist("mumu_phi" ,cat,diMu.Phi(),evweight);
-  l.FillHist("mumu_mass",cat,diMu.M(),evweight);
+  l.FillHist("mmg_pt"       	,cat,mmg.Pt(),evweight);
+  l.FillHist("mmg_eta"      	,cat,mmg.Eta(),evweight);
+  l.FillHist("mmg_phi"      	,cat,mmg.Phi(),evweight);
+  l.FillHist("mmg_mass"     	,cat,mmg.M(),evweight);
+  l.FillHist("nvtx"     	,cat,l.vtx_std_n,evweight);
+  l.FillHist("pho_n"    	,cat,l.pho_n,evweight);
+  l.FillHist("pho_e"    	,cat,selPho.E(),evweight);
+  l.FillHist("pho_pt"   	,cat,selPho.Pt(),evweight);
+  l.FillHist("pho_eta"  	,cat,selPho.Eta(),evweight);
+  l.FillHist("pho_phi"  	,cat,selPho.Phi(),evweight);
+  l.FillHist("pho_sce"  	,cat,selScE,evweight);
+  l.FillHist("pho_sceta"	,cat,selSc.Eta(),evweight);
+  l.FillHist("pho_r9"   	,cat,l.pho_r9[iselPho],evweight);
+  l.FillHist("mu1_pt"   	,cat,leadMu.Pt(),evweight);
+  l.FillHist("mu1_eta"  	,cat,leadMu.Eta(),evweight);
+  l.FillHist("mu1_phi"  	,cat,leadMu.Phi(),evweight);
+  l.FillHist("mu2_pt"   	,cat,subMu.Pt(),evweight);
+  l.FillHist("mu2_eta"  	,cat,subMu.Eta(),evweight);
+  l.FillHist("mu2_phi"  	,cat,subMu.Phi(),evweight);
+  l.FillHist("mumu_pt"  	,cat,diMu.Pt(),evweight);
+  l.FillHist("mumu_eta" 	,cat,diMu.Eta(),evweight);
+  l.FillHist("mumu_phi" 	,cat,diMu.Phi(),evweight);
+  l.FillHist("mumu_mass"	,cat,diMu.M(),evweight);
   
   if( cat == 0 ) { 
     treevars_.run       = l.run;
@@ -238,6 +243,8 @@ void ZMuMuGammaAnalysis::fillPlots(int cat, float evweight,
     *(treevars_.leadMu) = leadMu;
     *(treevars_.subMu)  = subMu;
     *(treevars_.photon) = selPho;
+    *(treevars_.mm)     = diMu;
+    *(treevars_.mmg)    = mmg;
     treevars_.idmva     = l.photonIDMVA(iselPho,0,selPho,bdtTrainingType.c_str());
     std::vector<std::vector<bool> > ph_passcut;
     treevars_.ciclevel  = l.PhotonCiCPFSelectionLevel(iselPho, 0, ph_passcut, 4, 0, &smeared_pho_energy[0]);
@@ -253,12 +260,12 @@ bool ZMuMuGammaAnalysis::muonSelection(LoopAll& l, int iMu) {
 
   if ( p4->Pt() <  muPtMin )                                     result=false;  
   if ( l.mu_tkLayers[iMu] <= muTkLayers  )                       result=false;
-  if ( l.mu_glo_pixelhits[iMu] < muPixelHits )                   result=false;
-  if ( l.mu_glo_validChmbhits[iMu] < muValidChambers )           result=false;
+  if ( l.mu_glo_pixelhits[iMu] <= muPixelHits )                   result=false;
+  if ( l.mu_glo_validChmbhits[iMu] <= muValidChambers )           result=false;
   if ( l.mu_glo_nmatches[iMu] <= muNmatches  )                   result=false;
   if ( l.mu_glo_chi2[iMu]/l.mu_glo_dof[iMu] >= muNormChi2  )     result=false;
-  if ( l.mu_glo_D0Vtx[iMu][0] > muD0Vtx )                        result=false;
-  if ( l.mu_glo_DZVtx[iMu][0] > muDZVtx )                        result=false;
+  if ( l.mu_glo_D0Vtx[iMu][0] >= muD0Vtx )                        result=false;
+  if ( l.mu_glo_DZVtx[iMu][0] >= muDZVtx )                        result=false;
   if ( l.mu_glo_hasgsftrack[iMu] )                               result=false;
 
   //cout << " ending Muon Selection result " << result <<  endl;
