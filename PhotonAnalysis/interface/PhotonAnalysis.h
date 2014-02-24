@@ -81,7 +81,7 @@ class PhotonAnalysis : public BaseAnalysis
     float forcedRho;
     bool applyPtoverM;
     float massMin, massMax;
-    bool doTriggerSelection;
+    bool doTriggerSelection, triggerOnMc;
     bool useRunDTriggersForZee;
     std::vector<TriggerSelection> triggerSelections;
 

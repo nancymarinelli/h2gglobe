@@ -33,7 +33,7 @@ muNormChi2=10.
 muD0Vtx=0.2
 muDZVtx=0.5
 
-dEtaMin=0.05
+dEtaMin=0.1
 
 massMin=60
 massMax=120
@@ -52,11 +52,11 @@ bdtTrainingType=MIT
 bdtTrainingPhilosophy=MIT
 
 scale_offset_error_file=zmumugamma/energy_scale_errors.dat
-systRange=2
-nSystSteps=2
+systRange=4
+nSystSteps=4
 doEscaleSyst=1
 doEcorrectionSyst=0
-doEresolSyst=1
+doEresolSyst=0
 doKFactorSyst=0
 doPdfWeightSyst=0
 doPhotonIdEffSyst=0

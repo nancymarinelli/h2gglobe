@@ -725,7 +725,8 @@ void PhotonAnalysis::Init(LoopAll& l)
     }
 
     /// // trigger
-
+    if( l.runZeeValidation ) { triggerOnMc = true; }
+    
     if (l.runZeeValidation && l.sqrtS != 7) {
         
         triggerSelections.push_back(TriggerSelection(1,-1));
@@ -2401,7 +2402,7 @@ bool PhotonAnalysis::SkimEvents(LoopAll& l, int jentry)
 
     // do not run trigger selection on MC
     int filetype = l.itype[l.current];
-    bool skipTrigger = !doTriggerSelection || ( filetype != 0 && !l.runZeeValidation ) || triggerSelections.empty() || (l.sqrtS == 7 && filetype != 0);
+    bool skipTrigger = !doTriggerSelection || ( filetype != 0 && triggerOnMc ) || triggerSelections.empty() || (l.sqrtS == 7 && filetype != 0);
     
     if( ! skipTrigger ) {
         // get the trigger selection for this run

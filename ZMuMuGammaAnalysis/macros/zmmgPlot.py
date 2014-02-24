@@ -643,7 +643,7 @@ if __name__ == "__main__":
                                      ("mumu_pt"  ,[(rename,catlabels)],defdrawopt,deflegPos),
                                      ("mumu_eta" ,[(rename,catlabels)],defdrawopt,deflegPos),
                                      ("mumu_phi" ,[(rename,catlabels)],defdrawopt,deflegPos),
-                                     ("mumu_mass",[(rename,catlabels)],defdrawopt,deflegPos),
+                                     ("mumu_mass",[(rename,catlabels),("Rebin",4)],defdrawopt,deflegPos),
                                      ]
                            )
 

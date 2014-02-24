@@ -82,6 +82,7 @@ void ZMuMuGammaAnalysis::Init(LoopAll& l)
     triggerSelections.clear();
     triggerSelections.push_back(TriggerSelection(1,-1));
     triggerSelections.back().addpath("HLT_Mu17_TkMu8");
+    triggerOnMc = true;
 }
 
 // ----------------------------------------------------------------------------------------------------
@@ -177,7 +178,7 @@ bool ZMuMuGammaAnalysis::AnalyseEvent(LoopAll& l, Int_t jentry, float weight, TL
 
     // define categories for plotting
     int etacat = (!l.pho_isEB[iselPho]);
-    int ptcat  = (selPho.Pt()<30.);
+    int ptcat  = (selPho.Pt()<25.);
     int r9cat  = (l.pho_r9[iselPho] < 0.94);
     category = r9cat  + 2*etacat + 4*ptcat;
     mass = this->getMumugP4().M();
@@ -293,6 +294,9 @@ bool ZMuMuGammaAnalysis::FSRselection ( LoopAll& l, int ileadMu, int isubMu, int
   TLorentzVector & leadMu =  *( (TLorentzVector*)l.mu_glo_p4->At(ileadMu));
   TLorentzVector & subMu  =  *( (TLorentzVector*)l.mu_glo_p4->At(isubMu) );    
   TLorentzVector & selPho =  *((TLorentzVector*)phos_p4.At(iPho));
+  TLorentzVector diMu = leadMu + subMu;
+  
+  if (leadMu.Pt() < 30. || diMu.M() < 45.  ){ return false; }
   //
   float leadMuDPhi = leadMu.DeltaPhi(selPho);
   float subleadMuDPhi = subMu.DeltaPhi(selPho);
@@ -317,7 +321,6 @@ bool ZMuMuGammaAnalysis::FSRselection ( LoopAll& l, int ileadMu, int isubMu, int
   //
   TLorentzVector & farMuP4 =  *( (TLorentzVector*)l.mu_glo_p4->At(iFarMu));
 
-  TLorentzVector diMu = leadMu + subMu;
   mumugMass_ = diMu + selPho; 
     
   if ( farMuP4.Pt() < 21.) { return false; };
