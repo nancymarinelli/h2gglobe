@@ -2,6 +2,7 @@
 #define __ZMUMUGAMMAANALYSIS__
 
 #include "PhotonAnalysis/interface/StatAnalysis.h"
+#include "VertexAnalysis/interface/PhotonInfo.h"
 
 // ------------------------------------------------------------------------------------
 class ZMuMuGammaAnalysis : public  StatAnalysis
@@ -15,16 +16,23 @@ class ZMuMuGammaAnalysis : public  StatAnalysis
   
   struct TreeVariables 
   {
-	  TreeVariables();
-	  
-	  unsigned int run, event, lumi;
-	  TLorentzVector *leadMu, *subMu, *photon, *mm, *mmg;
-	  int category;
-	  double mass;
-	  double weight;
-	  int nvtx;
-	  double idmva;
-	  int ciclevel;
+    TreeVariables();
+    
+    unsigned int run, event, lumi;
+    TLorentzVector *leadMu, *subMu, *photon, *mm, *mmg;
+    int category;
+    double mass;
+    double weight;
+    int nvtx;
+    double idmva;
+    int ciclevel;
+    bool isConv;
+    double  convVtxZ;
+    double  convVtxR;
+    float  convVtxChi2;
+    double convPt;
+
+   
   };
   
 
