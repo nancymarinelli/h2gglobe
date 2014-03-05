@@ -20,11 +20,21 @@ htyp=0 plot=-1  ncat=15  xbins=60    ybins=0       xmin=0.0   xmax=120.0  ymin=0
 htyp=0 plot=-1  ncat=15  xbins=51    ybins=0       xmin=-2.55   xmax=2.55  ymin=0      ymax=0       name=mu1_eta 	yaxis=Events/bin xaxis=#eta_{#mu1}  
 htyp=0 plot=-1  ncat=15  xbins=51    ybins=0       xmin=-2.55   xmax=2.55  ymin=0      ymax=0       name=mu1_phi 	yaxis=Events/bin xaxis=#phi_{#mu1}   
 
-htyp=0 plot=-1  ncat=15  xbins=60    ybins=0       xmin=0.0   xmax=120.0  ymin=0      ymax=0        name=mu2_pt         yaxis=Events/bin xaxis=p^{T}_{#mu2}
+htyp=0 plot=-1  ncat=15  xbins=60    ybins=0       xmin=0.0   xmax=120.0  ymin=0      ymax=0        name=mu2_pt         yaxis=Events/bin xaxis=p^{T}_{#mu2} 
 htyp=0 plot=-1  ncat=15  xbins=51    ybins=0       xmin=-2.55   xmax=2.55  ymin=0      ymax=0       name=mu2_eta 	yaxis=Events/bin xaxis=#eta_{#mu2} 
 htyp=0 plot=-1  ncat=15  xbins=51    ybins=0       xmin=-2.55   xmax=2.55  ymin=0      ymax=0       name=mu2_phi 	yaxis=Events/bin xaxis=#phi_{#mu2} 
 
-htyp=0 plot=-1  ncat=15  xbins=250    ybins=0       xmin=0.0   xmax=250.0  ymin=0      ymax=0       name=mumu_pt 	yaxis=Events/bin xaxis=p^{T}_{#mu#mu}
+htyp=0 plot=-1  ncat=15  xbins=250   ybins=0       xmin=0.0   xmax=250.0  ymin=0      ymax=0       name=mumu_pt 	yaxis=Events/bin xaxis=p^{T}_{#mu#mu}
 htyp=0 plot=-1  ncat=15  xbins=51    ybins=0       xmin=-2.55 xmax=2.55  ymin=0     ymax=0          name=mumu_eta       yaxis=Events/bin xaxis=#eta_{#mu#mu} 
 htyp=0 plot=-1  ncat=15  xbins=51    ybins=0       xmin=-2.55 xmax=2.55  ymin=0     ymax=0          name=mumu_phi       yaxis=Events/bin xaxis=#phi_{#mu#mu}
-htyp=0 plot=-1  ncat=15  xbins=360  ybins=0       xmin=30.0  xmax=120.0  ymin=0      ymax=0         name=mumu_mass 	yaxis=Events/bin xaxis=m_{#mu#mu}
+htyp=0 plot=-1  ncat=15  xbins=360   ybins=0       xmin=30.0  xmax=120.0  ymin=0      ymax=0         name=mumu_mass 	yaxis=Events/bin xaxis=m_{#mu#mu}
+
+htyp=0 plot=-1  ncat=15  xbins=51    ybins=0       xmin=-2.55   xmax=2.55  ymin=0      ymax=0       name=conv_sceta 	yaxis=Events/bin xaxis=#eta_{SC}_{conv}
+htyp=0 plot=-1  ncat=15  xbins=100   ybins=0       xmin=0.      xmax=1.     ymin=0      ymax=0        name=conv_r9        yaxis=Events/bin xaxis=R_{9}_{conv}
+htyp=0 plot=-1  ncat=15  xbins=60    ybins=0       xmin=0.0     xmax=120.0  ymin=0      ymax=0        name=conv_pt         yaxis=Events/bin xaxis=p^{T}_{conv}
+htyp=0 plot=-1  ncat=15  xbins=60    ybins=0       xmin=0.0     xmax=120.0  ymin=0      ymax=0        name=conv_et         yaxis=Events/bin xaxis=E^{T}_{#gamma}
+htyp=0 plot=-1  ncat=15  xbins=60    ybins=0       xmin=0.0     xmax=10.0  ymin=0      ymax=0         name=conv_EoverP      yaxis=Events/bin xaxis=E/p_{tracks}
+htyp=0 plot=-1  ncat=15  xbins=60    ybins=0       xmin=0.0     xmax=1.0  ymin=0      ymax=0          name=conv_vtxChi2      yaxis=Events/bin xaxis=vtx@#chi^{2}
+htyp=0 plot=-1  ncat=15  xbins=50    ybins=0       xmin=0.0     xmax=100.0  ymin=0      ymax=0        name=conv_vtxR        yaxis=Events/bin xaxis=R_{conv}@(cm)
+htyp=0 plot=-1  ncat=15  xbins=100    ybins=0      xmin=-200.0  xmax=200.0  ymin=0      ymax=0    name=conv_vtxZ        yaxis=Events/bin xaxis=Z_{conv}@(cm)
+
