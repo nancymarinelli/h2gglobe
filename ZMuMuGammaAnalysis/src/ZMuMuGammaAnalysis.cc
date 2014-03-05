@@ -55,7 +55,15 @@ void ZMuMuGammaAnalysis::Init(LoopAll& l)
     l.BookExternalTreeBranch("idmva_ChargedIso_worstvtx",   &l.tmva_photonid_pfchargedisobad03, "zmmgAnalysis" );
     l.BookExternalTreeBranch("sceta",   &l.tmva_photonid_sceta, "zmmgAnalysis" );
     l.BookExternalTreeBranch("rho",   &l.tmva_photonid_eventrho, "zmmgAnalysis" );
-    
+    // store conversion infos
+    l.BookExternalTreeBranch( "isConv",   &treevars_.isConv, "zmmgAnalysis" );         
+    l.BookExternalTreeBranch( "conv_vtxZ",   &treevars_.convVtxZ, "zmmgAnalysis" );         
+    l.BookExternalTreeBranch( "conv_vtxR",   &treevars_.convVtxR, "zmmgAnalysis" );  
+    l.BookExternalTreeBranch( "conv_vtxChi2", &treevars_.convVtxChi2, "zmmgAnalysis" );      
+    l.BookExternalTreeBranch( "conv_pt",   &treevars_.convPt, "zmmgAnalysis" );      
+
+
+
     l.rooContainer->BlindData(false);
     l.rooContainer->SaveSystematicsData(true);
     
@@ -105,6 +113,8 @@ bool ZMuMuGammaAnalysis::AnalyseEvent(LoopAll& l, Int_t jentry, float weight, TL
     // event selection
     int leadpho_ind=-1;
     int subleadpho_ind=-1;
+
+
     
     // Muon selection
     // -------------------------------------------------------------------------------------------------
@@ -209,6 +219,9 @@ void ZMuMuGammaAnalysis::fillPlots(int cat, float evweight,
 
   TVector3 & selSc = *((TVector3*)l.sc_xyz->At(l.pho_scind[iselPho]));
   double selScE =  l.sc_raw[l.pho_scind[iselPho]];
+  // get infos if it's a conversion
+  int convindex = l.matchPhotonToConversion(iselPho, 2);
+
   //
   l.FillHist("mmg_pt"       	,cat,mmg.Pt(),evweight);
   l.FillHist("mmg_eta"      	,cat,mmg.Eta(),evweight);
@@ -233,6 +246,19 @@ void ZMuMuGammaAnalysis::fillPlots(int cat, float evweight,
   l.FillHist("mumu_eta" 	,cat,diMu.Eta(),evweight);
   l.FillHist("mumu_phi" 	,cat,diMu.Phi(),evweight);
   l.FillHist("mumu_mass"	,cat,diMu.M(),evweight);
+  if ( convindex !=-1 ) {
+    //    cout << " Filling conversion plots " << endl;
+    //cout << selSc.Eta() << " " << l.pho_r9[iselPho] << " " << ((TVector3*) l.conv_vtx->At(convindex))->Z() << " " << ((TVector3*) l.conv_vtx->At(convindex))->Perp() << " " << l.conv_chi2_probability[convindex] << endl;
+    l.FillHist("conv_sceta"	,cat,selSc.Eta(),evweight);
+    l.FillHist("conv_r9"	,cat,l.pho_r9[iselPho],evweight);
+    l.FillHist("conv_pt"	,cat,((TVector3*) l.conv_refitted_momentum->At(convindex))->Pt(),evweight);
+    l.FillHist("conv_et"	,cat,selPho.Pt(),evweight);
+    l.FillHist("conv_EoverP"	,cat,selPho.E()/(((TVector3*) l.conv_refitted_momentum->At(convindex))->Mag()),evweight);
+    l.FillHist("conv_vtxChi2"	,cat,l.conv_chi2_probability[convindex],evweight);
+    l.FillHist("conv_vtxR"	,cat,((TVector3*) l.conv_vtx->At(convindex))->Perp(),evweight);
+    l.FillHist("conv_vtxZ"	,cat,((TVector3*) l.conv_vtx->At(convindex))->Z(),evweight);
+
+  }  
   
   if( cat == 0 ) { 
     treevars_.run       = l.run;
@@ -249,6 +275,15 @@ void ZMuMuGammaAnalysis::fillPlots(int cat, float evweight,
     treevars_.idmva     = l.photonIDMVA(iselPho,0,selPho,bdtTrainingType.c_str());
     std::vector<std::vector<bool> > ph_passcut;
     treevars_.ciclevel  = l.PhotonCiCPFSelectionLevel(iselPho, 0, ph_passcut, 4, 0, &smeared_pho_energy[0]);
+    treevars_.isConv    = l.pho_isconv;
+    if ( convindex !=-1 ) {
+      treevars_.convVtxZ   = ((TVector3*) l.conv_vtx->At(convindex))->Z();
+      treevars_.convVtxR   = ((TVector3*) l.conv_vtx->At(convindex))->Perp();
+      treevars_.convVtxChi2   = l.conv_chi2_probability[convindex]; 
+      treevars_.convPt     = ((TVector3*) l.conv_refitted_momentum->At(convindex))->Pt();
+ 
+      
+    }
   }
 }
 
